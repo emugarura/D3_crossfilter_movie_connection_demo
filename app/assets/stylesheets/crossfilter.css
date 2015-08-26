@@ -1,0 +1,67 @@
+.bar {
+  fill: steelblue;
+}
+
+.deselected{
+  fill: #ccc;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font: 8px sans-serif;
+}
+
+.brush rect.extent {
+  fill: steelblue;
+  fill-opacity: .125;
+}
+
+.brush .resize path {
+  fill: #eee;
+  stroke: #666;
+}
+
+#year-chart {
+  width: 100%;
+}
+
+#actor-chart {
+  width: 100%;
+}
+
+#director-chart {
+  width: 100%;
+}
+
+#director-chart .x-axis-lable{
+	margin-bottom: 25px;
+}
+
+#actor-chart .y{
+	visibility: hidden;
+}
+
+#director-chart .row text{
+  font: 12px sans-serif;
+	color: #282828;
+}
+
+#charts{
+	width:260px;
+}
+
+.chart{
+	float:left;
+	display:block;
+}
+
+.x-axis-label{
+  font: 10px sans-serif;
+  float:right;	
+  display:block;
+}

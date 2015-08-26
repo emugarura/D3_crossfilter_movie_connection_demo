@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <meta charset="utf-8">	
+  <title>Some Degrees of IMDB</title>
+  
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <link data-turbolinks-track="true" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" />
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+  <div id="wrapper">
+    <h1><%= link_to 'Some Degrees of IMDB', movies_path %></h1>
+    
+    <%= yield %>
+    
+    <div id="footer">
+      Stats: 
+      <%= Movie.count %> movies /// 
+      <%= Person.count %> people /// 
+      <%= Acting.count %> actings /// 
+      <%= Directing.count %> directings
+    </div>
+  </div>
+  
+  <div id="spinner_container" style="display:none">
+    <span class="spinner_wrapper">
+      <%= image_tag 'spinner.gif' %>
+    </span>
+  </div>
+  
+</body>
+</html>

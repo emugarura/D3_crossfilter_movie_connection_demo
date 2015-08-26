@@ -1,0 +1,18 @@
+<h1><%= @movie.title %> (<%= @movie.year %>)</h1>
+
+<% if @movie.directors.length > 0 %>
+<p><strong>Directed by: </strong> <%= raw @movie.directors.map{|d| link_to h(d.name), person_path(d) }.join(', ') %></p>
+
+<hr />
+<% end %>
+
+<p><%= link_to 'IMDb', "http://anonym.to/?http://akas.imdb.com/title/#{@movie.imdb_id}" %></p>
+
+<table border="1">
+<% @movie.actings.each do |acting| %>
+<tr>
+  <td><%= link_to acting.person.name, acting.person %></td>
+  <td><%= acting.role %></td>
+</tr>
+<% end %>
+</table>

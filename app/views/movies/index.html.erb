@@ -1,0 +1,144 @@
+<div id="search">
+  <%= form_tag relations_movies_path, method: 'get', id: 'search_form' %>
+    <p style="float:left;margin-right:20px;"><label>Movie 1</label>
+    <input type="text" name="movie1" id="movie1" style="width:400px" autocomplete="off" />
+    <input type="hidden" value="" name="movie1_id" id="movie1_id" /></p>
+
+    <p style="float:left"><label>Movie 2</label>
+    <input type="text" name="movie2" id="movie2" style="width:400px" autocomplete="off" />
+    <input type="hidden" value="" name="movie2_id" id="movie2_id" /></p>
+    
+    <div class="clear"></div>
+    
+    <table id="slider_table">
+      <tr>
+        <td>
+          <label>Year from</label>
+          <input type="text" class="sliderValue" data-index="0" value="1900" name="start_year" id="start_year" style="width:50px;" />
+        </td>
+        <td><div id="slider"></div></td>
+        <td>
+          <label>Year until</label>
+          <input type="text" class="sliderValue" data-index="1" value="2017" name="end_year" id="end_year" style="width:50px;" />
+        </td>
+      </tr>
+    </table>
+
+    <p class="clear" style="margin-top:10px;"><input type="submit" value="Search" class="btn btn-success btn-large" /></p>
+  </form>
+</div>
+
+<div id="graph">
+  <div id="vis"></div>
+</div>
+<div id="left">
+  <div id="charts" style="display:none">
+    <h2>Number of films by release year</h2>
+    
+    <div id='year-chart'></div>
+    <span class="x-axis-label">year</span>
+    
+    <div id='actor-chart'></div>   	
+    <span class="x-axis-label">number of actors</span>
+    
+    <h2>Number of directors</h2>
+    <div id='director-chart'></div>
+    <span class="x-axis-label">number of films</span>
+  </div>
+  <div id="info"></div>
+</div>
+<div class="clear"></div>
+
+<script type="text/javascript" charset="utf-8">
+  var lastData;
+  var myNetwork;
+  
+  $(function(){
+    myNetwork = window.Network();
+    
+    
+    $("#slider").slider({
+        min: 1900,
+        max: 2017,
+        step: 1,
+        values: [1900, 2017],
+        slide: function(event, ui) {
+            for (var i = 0; i < ui.values.length; ++i) {
+                $("input.sliderValue[data-index=" + i + "]").val(ui.values[i]);
+            }
+        }
+    });
+    
+    $('#search_form').on('submit', function(e){
+      e.preventDefault();
+      
+      if ($('#movie1').val()=='' && $('#movie2').val()=='') {
+        $('#search_form').effect('shake');
+      }
+      else {
+        $('#spinner_container').show();
+        
+        $.ajax('<%= relations_movies_path(format: 'json') %>?'+$('#search_form').serialize(), {
+          method: 'get',
+          success: function(data){
+            lastData = data;
+            
+            $('#spinner_container').hide();
+            
+            $('#vis').children().remove();
+            
+            myNetwork("#vis", data);
+            
+            $('#charts').show();
+          },
+          error: function(){
+            $('#spinner_container').hide();
+            alert('Sorry, but an error occured!');
+          }
+        })
+      }
+    })
+  })
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  var defaultOptions = {
+    minLength: 2,
+    source: function( request, response ) {
+      $.ajax({
+        url: "<%= movies_url(format: 'json') %>"+"?term="+request.term,
+        success: function( data ) {
+          response( $.map( data, function( item ) {
+            return {
+              label: item.title + " ("+item.year+")",
+              value: item.title + " ("+item.year+")",
+              movieID: item.id
+            }
+          }));
+        }
+      });
+    }
+  }
+  
+  var movie1Options = {};
+  var movie1Options = $.extend(movie1Options, defaultOptions, {
+    select: function(event, ui) {
+      $('#movie1').val(ui.item.value);
+      $('#movie1_id').val(ui.item.movieID);
+      return false;
+    }
+  });
+  
+  var movie2Options = {};
+  var movie2Options = $.extend(movie2Options, defaultOptions, {
+    select: function(event, ui) {
+      $('#movie2').val(ui.item.value);
+      $('#movie2_id').val(ui.item.movieID);
+      return false;
+    }
+  })
+  
+  $('#movie1').autocomplete(movie1Options);
+  
+  $('#movie2').autocomplete(movie2Options);
+</script>

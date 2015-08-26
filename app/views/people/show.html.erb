@@ -1,0 +1,10 @@
+<h1><%= @person.name %></h1>
+
+<table border="1">
+<% @actings.each do |acting| %>
+<tr>
+  <td><%= link_to "#{acting.movie.title} (#{acting.movie.year})", acting.movie %></td>
+  <td><%= acting.role %></td>
+</tr>
+<% end %>
+</table>
