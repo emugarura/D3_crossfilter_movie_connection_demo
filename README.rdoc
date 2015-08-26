@@ -1,1 +1,9 @@
+![Screenshot](https://dl.dropboxusercontent.com/u/9917288/kevin_bacon_screen.jpg)
+
+Based on IMDB data.
+
 Authors: Christoph Edthofer, Thomas Kowar, Katrin Hewer
+
+
+
+
